@@ -7,7 +7,6 @@ export default function createStore(getRoutes, history, client, data) {
   const reduxRouterMiddleware = syncHistory(history);
 
   const middleware = [createMiddleware(client), reduxRouterMiddleware];
-
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
     const { persistState } = require('redux-devtools');
@@ -22,6 +21,9 @@ export default function createStore(getRoutes, history, client, data) {
   }
 
   const reducer = require('./modules/reducer');
+  if (data) {
+    data.pagination = Immutable.fromJS(data.pagination);
+  }
   const store = finalCreateStore(reducer, data);
 
   reduxRouterMiddleware.listenForReplays(store);

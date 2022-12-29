@@ -1,7 +1,7 @@
 /**
  * THIS IS THE ENTRY POINT FOR THE CLIENT, JUST LIKE server.js IS THE ENTRY POINT FOR THE SERVER.
  */
-import 'babel/polyfill';
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
@@ -10,14 +10,12 @@ import io from 'socket.io-client';
 import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { ReduxAsyncConnect } from 'redux-async-connect';
-
 import getRoutes from './routes';
 
 const client = new ApiClient();
 
 const dest = document.getElementById('content');
 const store = createStore(getRoutes, browserHistory, client, window.__data);
-
 function initSocket() {
   const socket = io('', {path: '/ws'});
   socket.on('news', (data) => {

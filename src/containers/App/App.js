@@ -2,13 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import Nav from 'react-bootstrap/lib/Nav';
+import NavItem from 'react-bootstrap/lib/NavItem';
 import Helmet from 'react-helmet';
 import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
 import { InfoBar } from 'components';
 import { routeActions } from 'react-router-redux';
 import config from '../../config';
+import { asyncConnect } from 'redux-async-connect';
 
 @connect(
   state => ({user: state.auth.user}),
@@ -84,17 +87,20 @@ export default class App extends Component {
               <LinkContainer to="/survey">
                 <NavItem eventKey={3}>Survey</NavItem>
               </LinkContainer>
+              <LinkContainer to="/pagination">
+                <NavItem eventKey={4}>Pagination</NavItem>
+              </LinkContainer>
               <LinkContainer to="/about">
-                <NavItem eventKey={4}>About Us</NavItem>
+                <NavItem eventKey={5}>About Us</NavItem>
               </LinkContainer>
 
               {!user &&
               <LinkContainer to="/login">
-                <NavItem eventKey={5}>Login</NavItem>
+                <NavItem eventKey={6}>Login</NavItem>
               </LinkContainer>}
               {user &&
               <LinkContainer to="/logout">
-                <NavItem eventKey={6} className="logout-link" onClick={this.handleLogout}>
+                <NavItem eventKey={7} className="logout-link" onClick={this.handleLogout}>
                   Logout
                 </NavItem>
               </LinkContainer>}

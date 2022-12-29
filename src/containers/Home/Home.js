@@ -86,6 +86,9 @@ export default class Home extends Component {
             <li><a href="https://github.com/erikras/redux-form" target="_blank">redux-form</a> to manage form state
               in Redux
             </li>
+            <li><a href="https://github.com/sslotsky/violet-paginator" target="_blank">violet-paginator</a> to manage list state
+              in Redux, including pagination, sorting, filtering, updating, and more.
+            </li>
             <li><a href="https://github.com/erikras/multireducer" target="_blank">multireducer</a> combine several
               identical reducer states into one key-based reducer</li>
             <li><a href="https://github.com/webpack/style-loader" target="_blank">style-loader</a> and <a
@@ -112,7 +115,7 @@ export default class Home extends Component {
             <dd>
               The <Link to="/widgets">Widgets page</Link> demonstrates how to fetch data asynchronously from
               some source that is needed to complete the server-side rendering. <code>Widgets.js</code>'s
-              <code>fetchData()</code> function is called before the widgets page is loaded, on either the server
+              <code>asyncConnect()</code> function is called before the widgets page is loaded, on either the server
               or the client, allowing all the widget data to be loaded and ready for the page to render.
             </dd>
             <dt>Data loading errors</dt>
@@ -146,6 +149,12 @@ export default class Home extends Component {
               The <Link to="/survey">Survey page</Link> uses the
               still-experimental <a href="https://github.com/erikras/redux-form" target="_blank">redux-form</a> to
               manage form state inside the Redux store. This includes immediate client-side validation.
+            </dd>
+            <dt>Pagination</dt>
+            <dd>
+              The <Link to="/pagination">Pagination page</Link> uses
+              <a href="https://www.npmjs.com/package/violet-paginator" target="_blank">violet-paginator</a> to
+              paginate and sort records in a data table.
             </dd>
             <dt>WebSockets / socket.io</dt>
             <dd>
