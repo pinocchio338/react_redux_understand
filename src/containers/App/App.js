@@ -9,27 +9,13 @@ import Helmet from 'react-helmet';
 import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
 import { InfoBar } from 'components';
-import { push } from 'react-router-redux';
+import { routeActions } from 'react-router-redux';
 import config from '../../config';
 import { asyncConnect } from 'redux-async-connect';
 
-@asyncConnect([{
-  promise: ({store: {dispatch, getState}}) => {
-    const promises = [];
-
-    if (!isInfoLoaded(getState())) {
-      promises.push(dispatch(loadInfo()));
-    }
-    if (!isAuthLoaded(getState())) {
-      promises.push(dispatch(loadAuth()));
-    }
-
-    return Promise.all(promises);
-  }
-}])
 @connect(
   state => ({user: state.auth.user}),
-  {logout, pushState: push})
+  {logout, pushState: routeActions.push})
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
@@ -50,6 +36,20 @@ export default class App extends Component {
       // logout
       this.props.pushState('/');
     }
+  }
+
+  static reduxAsyncConnect(params, store) {
+    const {dispatch, getState} = store;
+    const promises = [];
+
+    if (!isInfoLoaded(getState())) {
+      promises.push(dispatch(loadInfo()));
+    }
+    if (!isAuthLoaded(getState())) {
+      promises.push(dispatch(loadAuth()));
+    }
+
+    return Promise.all(promises);
   }
 
   handleLogout = (event) => {

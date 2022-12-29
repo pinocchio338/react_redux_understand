@@ -13,9 +13,8 @@ import PrettyError from 'pretty-error';
 import http from 'http';
 
 import { match } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
-import createHistory from 'react-router/lib/createMemoryHistory';
+import createHistory from 'history/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
 import getRoutes from './routes';
 
@@ -67,9 +66,9 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
   const client = new ApiClient(req);
-  const memoryHistory = createHistory(req.originalUrl);
-  const store = createStore(memoryHistory, client);
-  const history = syncHistoryWithStore(memoryHistory, store);
+  const history = createHistory();
+
+  const store = createStore(getRoutes, history, client);
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
@@ -89,7 +88,7 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {
-      loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
+      loadOnServer(renderProps, store, {client}).then(() => {
         const component = (
           <Provider store={store} key="provider">
             <ReduxAsyncConnect {...renderProps} />

@@ -9,18 +9,13 @@ import ApiClient from './helpers/ApiClient';
 import io from 'socket.io-client';
 import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 import { ReduxAsyncConnect } from 'redux-async-connect';
-import useScroll from 'scroll-behavior/lib/useStandardScroll';
-
 import getRoutes from './routes';
 
 const client = new ApiClient();
-const _browserHistory = useScroll(() => browserHistory)();
-const dest = document.getElementById('content');
-const store = createStore(_browserHistory, client, window.__data);
-const history = syncHistoryWithStore(_browserHistory, store);
 
+const dest = document.getElementById('content');
+const store = createStore(getRoutes, browserHistory, client, window.__data);
 function initSocket() {
   const socket = io('', {path: '/ws'});
   socket.on('news', (data) => {
@@ -38,8 +33,8 @@ global.socket = initSocket();
 
 const component = (
   <Router render={(props) =>
-        <ReduxAsyncConnect {...props} helpers={{client}} filter={item => !item.deferred} />
-      } history={history}>
+        <ReduxAsyncConnect {...props} helpers={{client}} />
+      } history={browserHistory}>
     {getRoutes(store)}
   </Router>
 );
